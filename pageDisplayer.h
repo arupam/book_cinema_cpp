@@ -8,3 +8,7 @@ void startPage()
 }
 
 
+void registerPage()
+{
+	cout<<endl<<ifstream("registerPage.txt").rdbuf();
+}
