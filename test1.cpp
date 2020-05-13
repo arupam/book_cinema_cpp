@@ -4,6 +4,14 @@
 using namespace std;
 
 
+int main()
+{
+	startAct();
+	
+	return 0;
+}
+
+
 void errorAct()
 {
 	errorPage();
@@ -122,14 +130,6 @@ void startAct()
 }
 
 
-
-
-int main()
-{
-	startAct();
-	
-	return 0;
-}
 
 
 
