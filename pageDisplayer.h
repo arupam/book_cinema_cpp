@@ -10,7 +10,6 @@ void startPage()
 	cout<<endl<<ifstream("startPage.txt").rdbuf();
 }
 
-
 void registerPage()
 {
 	cout<<endl<<ifstream("registerPage.txt").rdbuf();
@@ -22,7 +21,6 @@ void errorPage()
 	cout<<endl<<ifstream("errorPage.txt").rdbuf();
 }
 
-
 void loginPage()
 {
 	cout<<endl<<ifstream("loginPage.txt").rdbuf();
@@ -31,4 +29,9 @@ void loginPage()
 void loginAdmPage()
 {
 	cout<<endl<<ifstream("logiAdmPage.txt").rdbuf();
+}
+
+void exitPage()
+{
+	cout<<endl<<ifstream("exitPage.txt").rdbuf();
 }

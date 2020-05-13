@@ -3,6 +3,15 @@
 
 using namespace std;
 
+void errorAct();
+void startPageAct();
+void registerAct();
+void startAct();
+void loginAct();
+void exitAct();
+
+
+
 
 int main()
 {
@@ -12,28 +21,39 @@ int main()
 	return 0;
 }
 
+void exitAct()
+{
+	system("cls");
+	exitPage();
+	exit(0);
+	
+	
+}
 
 void errorAct()
-{
+{//for wrong choices
+int ch1;
+	system("cls");
 	errorPage();
-	cin>>ch;			  
+	cin>>ch1;			  
 	if(ch1==2)
 	{
-	  	return 0;
+	  	exitAct;
 	}
 	else if(ch1==1)
 	{
-		startPageAct();
+		startAct();
 	}
 	
 }
 
 void registerAct()
-{ 
+{ //to make account for user
 	int ch;
+	system("cls");
 	registerPage();
 	cin>>ch;
-	swtich(ch)
+	switch(ch)
 	{
 		case 1: 
 		 //Store password and userid if pw = cpw then take to startPage
@@ -41,7 +61,7 @@ void registerAct()
 		break;
 		
 		case 2:loginAct();
-		break
+		break;
 		
 		case 3:startAct();
 		break;
@@ -52,18 +72,19 @@ void registerAct()
 }
 
 void loginAct()
-{ 
+{ //Login activity for user 
 	int ch;
-	registerPage();
+	system("cls");
+	loginPage();
 	cin>>ch;
-	swtich(ch)
+	switch(ch)
 	{
 		case 1:
 			//verify user and take to dashboard
 		break;
 		
 		case 2:registerAct();
-		break
+		break;
 		
 		case 3:startAct();
 		break;
@@ -77,18 +98,16 @@ void loginAct()
 void loginActAdm()
 { //Login activity for admin
 	int ch;
-	registerPage();
+	system("cls");
+	loginAdmPage();
 	cin>>ch;
-	swtich(ch)
+	switch(ch)
 	{
 		case 1:
 			//verify user and take to admin dashboard
 		break;
 		
-		case 2:registerAct();
-		break
-		
-		case 3:startAct();
+		case 2:startAct();
 		break;
 		
 		default:errorAct();
@@ -99,12 +118,13 @@ void loginActAdm()
 void startAct()
 {
 	int ch;
+	system("cls");
 	startPage();
 	cin>>ch;
 		
 	switch(ch)
 	{
-		case 1;registerAct();	   
+		case 1:registerAct();	   
 		break;
 		
 		case 2:
@@ -119,7 +139,7 @@ void startAct()
 		case 5:
 		break;
 		
-		case 6:
+		case 6: exitAct();
 		break;
 		
 		default : errorAct();
