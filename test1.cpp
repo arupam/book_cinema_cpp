@@ -6,6 +6,7 @@ using namespace std;
 
 int main()
 {
+	//start startPage activity
 	startAct();
 	
 	return 0;

@@ -25,5 +25,10 @@ void errorPage()
 
 void loginPage()
 {
-	cour<<endl<<ifstream("loginPage.txt").rdbuf();
+	cout<<endl<<ifstream("loginPage.txt").rdbuf();
+}
+
+void loginAdmPage()
+{
+	cout<<endl<<ifstream("logiAdmPage.txt").rdbuf();
 }
