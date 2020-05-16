@@ -28,10 +28,16 @@ void loginPage()
 
 void loginAdmPage()
 {
-	cout<<endl<<ifstream("logiAdmPage.txt").rdbuf();
+	cout<<endl<<ifstream("loginAdmPage.txt").rdbuf();
 }
 
 void exitPage()
 {
 	cout<<endl<<ifstream("exitPage.txt").rdbuf();
 }
+
+void aboutPage()
+{
+	cout<<endl<<ifstream("aboutPage.txt").rdbuf();
+}
+

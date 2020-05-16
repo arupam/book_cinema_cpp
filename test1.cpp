@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string.h>
 #include "pageDisplayer.h"
 
 using namespace std;
@@ -9,6 +10,8 @@ void registerAct();
 void startAct();
 void loginAct();
 void exitAct();
+void loginActAdm();
+void aboutAct();
 
 
 
@@ -49,6 +52,8 @@ int ch1;
 
 void registerAct()
 { //to make account for user
+
+	char userid[20],pw[20];
 	int ch;
 	system("cls");
 	registerPage();
@@ -56,7 +61,14 @@ void registerAct()
 	switch(ch)
 	{
 		case 1: 
-		 //Store password and userid if pw = cpw then take to startPage
+		 //Store password and userid  then take to startPage
+		 cout<<"\n|Enter userid : ";
+		 cin>>userid;
+		 cout<<"\n|Enter Password : ";
+		 cin>>pw;
+		 
+		 //storing in txt file
+		 
 		 
 		break;
 		
@@ -127,25 +139,41 @@ void startAct()
 		case 1:registerAct();	   
 		break;
 		
-		case 2:
+		case 2:loginAct();
 		break;
 		
-		case 3:
+		case 3://dashboard
 		break;
 		
-		case 4:
+		case 4:loginActAdm();
 		break;
 		
-		case 5:
+		case 5:aboutAct();
 		break;
 		
 		case 6: exitAct();
 		break;
 		
-		default : errorAct();
+		default:errorAct();
 		 
 		
 	}
+	
+	
+}
+void aboutAct()
+{
+	int ch;
+	system("cls");
+	aboutPage();	
+	cin>>ch;
+	
+	if(ch==1)
+		startAct();
+	if(ch==2)
+		exitAct();
+	else
+		errorAct();
 	
 	
 }
