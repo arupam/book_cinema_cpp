@@ -41,3 +41,7 @@ void aboutPage()
 	cout<<endl<<ifstream("aboutPage.txt").rdbuf();
 }
 
+void seatmatrix()
+{
+	cout<<endl<<ifstream("seatmatrix.txt").rdbuf();
+}

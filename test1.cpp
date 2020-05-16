@@ -25,8 +25,9 @@ class logindata{
 	int age;//for movie rating
 	
 
-};
+}l;
 
+//to handle movie show data
 class showdata{
 	//admin can add
 	char moviename[20];
@@ -42,6 +43,7 @@ class showdata{
 	int seatssilver;
 	int seatsplatinium;
 	
+	public:
 	showdata(){
 		//default number of seats
 		seatssilver=80;
@@ -50,7 +52,39 @@ class showdata{
 		
 	}
 	
-};
+	void inputmoviedata(){
+		cout<<"\nEnter movie name: ";cin>>moviename;
+		cout<<"\nEnter genre: ";cin>>genre;
+		cout<<"\nEnter about: ";cin>>about;
+		cout<<"\nEnter Rating: ";cin>>rating;
+		
+		cout<<"\nEnter Silver Ticket Price: ";cin>>rating;
+		cout<<"\nEnter Gold Ticket Price: ";cin>>rating;
+		cout<<"\nEnter Platinium Ticket Price: ";cin>>rating;		
+		
+	}
+	
+	void displaymoviedata(){
+		cout<<"\nMovie Name: "<<moviename;
+		cout<<"\nMovie Genre: "<<genre;
+		cout<<"\nMovie about: "<<about;
+		cout<<"\nMovie Rating: "<<rating<<"*Stars";
+		
+		
+	}
+	
+	void updateseatno(int ticketsbought,int tickettype){
+		//this updates number of seats availible
+		switch(tickettype){
+			case 1:seatssilver-=ticketsbought;
+			break;
+			case 2:seatsgold-=ticketsbought;
+			break;
+			case 3:seatsplatinium-=ticketsbought;
+		}
+	}
+	
+}m;
 
 
 
