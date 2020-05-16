@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string.h>
 #include "pageDisplayer.h"
 
@@ -13,6 +14,43 @@ void exitAct();
 void loginActAdm();
 void aboutAct();
 
+//logindata format:userid pw  //seperated by space
+//userdata format:user tickerseatc
+//showdata : show ticketsold
+
+class logindata{
+	//this is for user to register and login
+	char username[20];
+	char userpw[20];
+	int age;//for movie rating
+	
+
+};
+
+class showdata{
+	//admin can add
+	char moviename[20];
+	char genre[10];
+	char about[30];
+	int rating;
+	
+	int pricegold;
+	int pricesilver;
+	int priceplatinium;
+	
+	int seatsgold;
+	int seatssilver;
+	int seatsplatinium;
+	
+	showdata(){
+		//default number of seats
+		seatssilver=80;
+		seatsgold=112;
+		seatsplatinium=60;
+		
+	}
+	
+};
 
 
 
@@ -20,10 +58,11 @@ int main()
 {
 	//start startPage activity
 	startAct();
-	
 	return 0;
 }
 
+
+//to exit the program //done
 void exitAct()
 {
 	system("cls");
@@ -33,6 +72,7 @@ void exitAct()
 	
 }
 
+//to show a error page in case of wrong input  //done
 void errorAct()
 {//for wrong choices
 int ch1;
@@ -50,6 +90,7 @@ int ch1;
 	
 }
 
+//To register new user
 void registerAct()
 { //to make account for user
 
@@ -61,13 +102,7 @@ void registerAct()
 	switch(ch)
 	{
 		case 1: 
-		 //Store password and userid  then take to startPage
-		 cout<<"\n|Enter userid : ";
-		 cin>>userid;
-		 cout<<"\n|Enter Password : ";
-		 cin>>pw;
-		 
-		 //storing in txt file
+		//making account
 		 
 		 
 		break;
