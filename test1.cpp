@@ -4,7 +4,7 @@
 #include "pageDisplayer.h"
 
 using namespace std;
-
+//---------------------------function prototypes---------------------------------
 void errorAct();
 void startPageAct();
 void registerAct();
@@ -18,10 +18,12 @@ void dashboard();
 //logindata format:userid pw  //seperated by space
 //userdata format:user tickerseatc
 //showdata : show ticketsold
-int state=0;// 0 means guest 1 means logged in 
 
 
+int state=0; // 0 means guest 1 means logged in  . 2 for wrong password
 
+
+//--------------------------class for login data----------------------------
 class logindata{
 	//this is for user to register and login
 	public:
@@ -40,6 +42,7 @@ class logindata{
 
 };
 
+//---------------------------class for movie data-----------------------------
 //to handle movie show data
 class showdata{
 	//admin can add
@@ -119,7 +122,7 @@ class showdata{
 };
 
 
-
+//--------------------------------main----------------------------------
 
 int main()
 {
@@ -128,6 +131,7 @@ int main()
 	return 0;
 }
 
+//-------------------------------dashboard------------------------------
 void dashboard()
 {
 	//keep a count variable
@@ -137,7 +141,7 @@ void dashboard()
 	//then ask for choice on what to do
 }
 
-
+//------------------------------exit--------------------------------------
 //to exit the program //done
 void exitAct()
 {
@@ -148,6 +152,7 @@ void exitAct()
 	
 }
 
+//--------------------------------error for wrong option selected---------------------------------
 //to show a error page in case of wrong input  //done
 void errorAct()
 {//for wrong choices
@@ -166,6 +171,7 @@ int ch1;
 	
 }
 
+//---------------------------------------register new user----------------------------------------
 //To register new user
 void registerAct()
 { //to make account for user
@@ -182,7 +188,7 @@ void registerAct()
 	{
 		case 1: 
 		//making account
-		fout.open("logindata.dat",ios::bin | ios::app);
+		fout.open("logindata.dat",ios::binary | ios::app);
 		//need to add an exception handling here for existing username redundancy
 		l.login();
 		fout.write((char *)&l,sizeof(l));
@@ -211,6 +217,8 @@ void registerAct()
 	
 }
 
+
+//------------------------------------------login-------------------------------------------------
 void loginAct()
 { //Login activity for user 
 	ifstream fin;
@@ -228,6 +236,9 @@ void loginAct()
 			//run a loop to verify but at eof() ask to make id and
 			cout<<"\n|Enter Your UserName: ";cin>>usernam;
 			cout<<"\n|Enter password: ";cin>>pw;
+			
+			fin.open("logindata.dat",ios::binary);
+			
 			while(!fin.eof()){
 				fin.read((char*)&l,sizeof(l));
 				if(strcmp(l.username,usernam))
@@ -281,12 +292,13 @@ void loginAct()
 	
 }
 
-
+//----------------------------------------admin------------------------------------------
 void loginActAdm()
 { //Login activity for admin
 	int ch;
 	ofstream fout;
 	ifstream fin;
+	showdata m; 
 	char adminid[20],adminpw[20];
 	
 	system("cls");
@@ -304,6 +316,19 @@ void loginActAdm()
 				cout<<"\n\n|Press 1:To add movies\n|Press 2:To remove movies"
 				cin>>ch;
 				switch(ch){
+					case 1://add movies
+					fout.open("showdata.dat",ios::binary|ios::app);
+					m.inputmoviedata();
+					fout.write((char*)&m,sizeof(m));
+					cout<<"\n\nMovie added!"
+					fout.close();
+					
+					
+					
+					
+					break;
+					
+					case 2:
 					
 					
 					
@@ -315,11 +340,12 @@ void loginActAdm()
 				cout<<"\n|press 1: to continue \npress 2: to exit\nyour choice:--> ";
 				
 				cin>>ch;
-			switch(ch){
-				case 1: state=0;startAct();
-				break;
-				case 2: 
-				default: state=0;errorAct();
+				switch(ch){
+					case 1:startAct();
+					break;
+					case 2: exitAct();
+					break;
+					default:errorAct();
 			}
 			
 			}
@@ -336,6 +362,7 @@ void loginActAdm()
 	
 }
 
+//-------------------------------------------start\home-----------------------------------
 void startAct()
 {
 	int ch;
@@ -351,7 +378,7 @@ void startAct()
 		case 2:loginAct();
 		break;
 		
-		case 3://dashboard
+		case 3:dashboard();
 		break;
 		
 		case 4:loginActAdm();
@@ -368,8 +395,9 @@ void startAct()
 		
 	}
 	
-	
 }
+
+//----------------------------------------------dashboard---------------------------------------------
 void aboutAct()
 {
 	int ch;
@@ -385,18 +413,4 @@ void aboutAct()
 		errorAct();
 	
 	
-}
-
-
-
-
-
-void makeNewAcc()
-{
-	
-	char username[100];
-	char password[100];
-	char confPassword[100];
-	
-	//i can make class for user data as well as a file to store all data like keypairs
 }
