@@ -13,19 +13,32 @@ void loginAct();
 void exitAct();
 void loginActAdm();
 void aboutAct();
+void dashboard();
 
 //logindata format:userid pw  //seperated by space
 //userdata format:user tickerseatc
 //showdata : show ticketsold
+int state=0;// 0 means guest 1 means logged in 
+
+
 
 class logindata{
 	//this is for user to register and login
+	public:
 	char username[20];
 	char userpw[20];
 	int age;//for movie rating
 	
+	public:
+		void register(){
+			//need to add conf pw verification
+			cout<<"\n|Enter new Username: ";cin>>username;
+			cout<<"\n|Enter new User password: ";cin>>userpw;
+			cout<<"\n|Enter your age: ";cin>>age;
+		}
+	
 
-}l;
+};
 
 //to handle movie show data
 class showdata{
@@ -34,7 +47,7 @@ class showdata{
 	char genre[10];
 	char about[30];
 	int review;
-	int rating;
+	int rating;//age viewers
 	
 	int pricegold;
 	int pricesilver;
@@ -67,10 +80,11 @@ class showdata{
 	}
 	
 	void displaymoviedata(){
+		cout<<"\n-----------------------------------------------";
 		cout<<"\nMovie Name: "<<moviename;
 		cout<<"\nMovie Genre: "<<genre;
 		cout<<"\nMovie About: "<<about;
-		cout<<"\nMovie Review: "<<review;
+		cout<<"\nMovie Review: "<<review<<"*Star";
 		cout<<"\nMovie Rating: "<<rating<<"+Age";
 		cout<<"\nTicket Price: "<<" Silver:rs"<<pricesilver<<" Gold:rs"<<pricegold<<" Platinium:rs"<<priceplatinium;
 		cout<<"\nSeat Availibility: ";
@@ -87,6 +101,7 @@ class showdata{
 		{
 			cout<<"HouseFUll!!"
 		}
+		cout<<"\n-----------------------------------------------";
 		
 	}
 	
@@ -101,7 +116,8 @@ class showdata{
 		}
 	}
 	
-}m;
+};
+
 
 
 
@@ -110,6 +126,15 @@ int main()
 	//start startPage activity
 	startAct();
 	return 0;
+}
+
+void dashboard()
+{
+	//keep a count variable
+	//to read file
+	//run loop 
+	//display all the objects 
+	//then ask for choice on what to do
 }
 
 
@@ -145,7 +170,10 @@ int ch1;
 void registerAct()
 { //to make account for user
 
-	char userid[20],pw[20];
+	//char userid[20],pw[20];int age;
+	logindata l;
+	ofstream fout;
+	
 	int ch;
 	system("cls");
 	registerPage();
@@ -154,7 +182,21 @@ void registerAct()
 	{
 		case 1: 
 		//making account
-		 
+		fout.open("logindata.dat",ios::bin | ios::app);
+		//need to add an exception handling here for existing username redundancy
+		l.login();
+		fout.write((char *)&l,sizeof(l));
+		fout.close();
+		cout<<"\nUser Registered Succesfully !";
+		cout<<"\nYou may login to continue\n|Press 1:StartPage\n|Press 2:LoginPage \nYour choice: ";
+		cin>>ch;
+		switch(ch){
+			case 1:startAct();
+			break;
+			case 2:loginAct();
+			break;
+			default:errorAct();
+		}
 		 
 		break;
 		
@@ -171,6 +213,10 @@ void registerAct()
 
 void loginAct()
 { //Login activity for user 
+	ifstream fin;
+	logindata l;
+	char usernam[20],pw[20];
+
 	int ch;
 	system("cls");
 	loginPage();
@@ -179,6 +225,49 @@ void loginAct()
 	{
 		case 1:
 			//verify user and take to dashboard
+			//run a loop to verify but at eof() ask to make id and
+			cout<<"\n|Enter Your UserName: ";cin>>usernam;
+			cout<<"\n|Enter password: ";cin>>pw;
+			while(!fin.eof()){
+				fin.read((char*)&l,sizeof(l));
+				if(strcmp(l.username,usernam))
+				{
+					if(strcmp(l.userpw,pw)){
+						state=1;
+						//cout<<"\nVerified user!"
+						break;
+					}
+					else
+					{state=2;
+					//cout<<"\nWrong password" // forgot pw action can be added
+					break;
+					}
+				}
+			}
+			if(state==1)
+			{cout<<"\nVerified user!"
+			//******************* redirect to dashboard
+			}
+			if(state==2){
+				cout<<"\nWrong Password try again !";
+			}
+			if(state==0){
+				cout<<"\nNo user found!";
+			}
+			cout<<"\n|press 1:startPage\n|press 2:register\n|press 3:login again\n|press 4:exit \nYour choice--> ";
+			cin>>ch;
+			switch(ch){
+				case 1: state=0;startAct();
+				break;
+				case 2: state=0;registerAct();
+				break;
+				case 3: state=0;loginAct();
+				break;
+				case 4: state=0;exitAct();
+				break;
+				default: state=0;errorAct();
+			}
+			
 		break;
 		
 		case 2:registerAct();
@@ -196,6 +285,10 @@ void loginAct()
 void loginActAdm()
 { //Login activity for admin
 	int ch;
+	ofstream fout;
+	ifstream fin;
+	char adminid[20],adminpw[20];
+	
 	system("cls");
 	loginAdmPage();
 	cin>>ch;
@@ -203,6 +296,36 @@ void loginActAdm()
 	{
 		case 1:
 			//verify user and take to admin dashboard
+			//This is temporary method
+			cout<<"\n|Enter adminid: ";cin>>adminid;
+			cout<<"\n|Enter password: ";cin>>adminpw;
+			if((strcmp(adminid,"admin"))&&(strcmp(adminpw,"1234"))){
+				cout<<"logged in !";
+				cout<<"\n\n|Press 1:To add movies\n|Press 2:To remove movies"
+				cin>>ch;
+				switch(ch){
+					
+					
+					
+				}
+			}
+			else
+			{
+				cout<<"Wrong id! redirecting to start page";
+				cout<<"\n|press 1: to continue \npress 2: to exit\nyour choice:--> ";
+				
+				cin>>ch;
+			switch(ch){
+				case 1: state=0;startAct();
+				break;
+				case 2: 
+				default: state=0;errorAct();
+			}
+			
+			}
+			
+			
+			
 		break;
 		
 		case 2:startAct();
