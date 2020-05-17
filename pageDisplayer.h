@@ -45,3 +45,8 @@ void seatmatrix()
 {
 	cout<<endl<<ifstream("seatmatrix.txt").rdbuf();
 }
+
+void dashboardPage()
+{
+	cout<<endl<<ifstream("dashboardPage.txt").rdbuf();
+}
