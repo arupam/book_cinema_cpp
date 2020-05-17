@@ -33,6 +33,7 @@ class showdata{
 	char moviename[20];
 	char genre[10];
 	char about[30];
+	int review;
 	int rating;
 	
 	int pricegold;
@@ -56,20 +57,36 @@ class showdata{
 		cout<<"\nEnter movie name: ";cin>>moviename;
 		cout<<"\nEnter genre: ";cin>>genre;
 		cout<<"\nEnter about: ";cin>>about;
+		cout<<"\nEnter review: ";cin>>review;		
 		cout<<"\nEnter Rating: ";cin>>rating;
 		
-		cout<<"\nEnter Silver Ticket Price: ";cin>>rating;
-		cout<<"\nEnter Gold Ticket Price: ";cin>>rating;
-		cout<<"\nEnter Platinium Ticket Price: ";cin>>rating;		
+		cout<<"\nEnter Silver Ticket Price: ";cin>>pricesilver;
+		cout<<"\nEnter Gold Ticket Price: ";cin>>pricegold;
+		cout<<"\nEnter Platinium Ticket Price: ";cin>>priceplatinium;		
 		
 	}
 	
 	void displaymoviedata(){
 		cout<<"\nMovie Name: "<<moviename;
 		cout<<"\nMovie Genre: "<<genre;
-		cout<<"\nMovie about: "<<about;
-		cout<<"\nMovie Rating: "<<rating<<"*Stars";
-		
+		cout<<"\nMovie About: "<<about;
+		cout<<"\nMovie Review: "<<review;
+		cout<<"\nMovie Rating: "<<rating<<"+Age";
+		cout<<"\nTicket Price: "<<" Silver:rs"<<pricesilver<<" Gold:rs"<<pricegold<<" Platinium:rs"<<priceplatinium;
+		cout<<"\nSeat Availibility: ";
+		if(seatsilver>0)
+		{cout<<"Silver";
+		}
+		if(seatgold>0)
+		{cout<<" Gold";
+		}
+		if(seatplatinium>0)
+		{cout<<" Platinium";
+		}
+		if((seatsilver<=0)&&(seatgold<=0)&&(seatplatinium<=0))
+		{
+			cout<<"HouseFUll!!"
+		}
 		
 	}
 	
