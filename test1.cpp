@@ -32,7 +32,7 @@ class logindata{
 	int age;//for movie rating
 	
 	public:
-		void register(){
+		void registeruser(){
 			//need to add conf pw verification
 			cout<<"\n|Enter new Username: ";cin>>username;
 			cout<<"\n|Enter new User password: ";cin>>userpw;
@@ -91,18 +91,18 @@ class showdata{
 		cout<<"\nMovie Rating: "<<rating<<"+Age";
 		cout<<"\nTicket Price: "<<" Silver:rs"<<pricesilver<<" Gold:rs"<<pricegold<<" Platinium:rs"<<priceplatinium;
 		cout<<"\nSeat Availibility: ";
-		if(seatsilver>0)
+		if(seatssilver>0)
 		{cout<<"Silver";
 		}
-		if(seatgold>0)
+		if(seatsgold>0)
 		{cout<<" Gold";
 		}
-		if(seatplatinium>0)
+		if(seatsplatinium>0)
 		{cout<<" Platinium";
 		}
-		if((seatsilver<=0)&&(seatgold<=0)&&(seatplatinium<=0))
+		if((seatssilver<=0)&&(seatsgold<=0)&&(seatsplatinium<=0))
 		{
-			cout<<"HouseFUll!!"
+			cout<<"HouseFUll!!";
 		}
 		cout<<"\n-----------------------------------------------";
 		
@@ -175,7 +175,7 @@ int ch1;
 //To register new user
 void registerAct()
 { //to make account for user
-
+ 
 	//char userid[20],pw[20];int age;
 	logindata l;
 	ofstream fout;
@@ -190,7 +190,7 @@ void registerAct()
 		//making account
 		fout.open("logindata.dat",ios::binary | ios::app);
 		//need to add an exception handling here for existing username redundancy
-		l.login();
+		l.registeruser();
 		fout.write((char *)&l,sizeof(l));
 		fout.close();
 		cout<<"\nUser Registered Succesfully !";
@@ -256,7 +256,7 @@ void loginAct()
 				}
 			}
 			if(state==1)
-			{cout<<"\nVerified user!"
+			{cout<<"\nVerified user!";
 			//******************* redirect to dashboard
 			}
 			if(state==2){
@@ -313,14 +313,14 @@ void loginActAdm()
 			cout<<"\n|Enter password: ";cin>>adminpw;
 			if((strcmp(adminid,"admin"))&&(strcmp(adminpw,"1234"))){
 				cout<<"logged in !";
-				cout<<"\n\n|Press 1:To add movies\n|Press 2:To remove movies"
+				cout<<"\n\n|Press 1:To add movies\n|Press 2:To remove movies";
 				cin>>ch;
 				switch(ch){
 					case 1://add movies
 					fout.open("showdata.dat",ios::binary|ios::app);
 					m.inputmoviedata();
 					fout.write((char*)&m,sizeof(m));
-					cout<<"\n\nMovie added!"
+					cout<<"\n\nMovie added!";
 					fout.close();
 					
 					
