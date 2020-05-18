@@ -1,3 +1,5 @@
+//This is project for DSA subject by arupam kumar saha . report as markdown will be updated as readme.md soon in github repo
+//github.com/arupam //repo:book_cinema_cpp
 #include <iostream>
 #include <fstream>
 #include <string.h>
