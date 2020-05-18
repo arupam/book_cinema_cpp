@@ -4,7 +4,12 @@
 #include "pageDisplayer.h"
 
 using namespace std;
-//---------------------------function prototypes------------------------ //check if all strcmp has !
+
+//global Var
+int state=0;int currentuserage; // 0 means guest 1 means logged in  . 2 for wrong password
+char currentusername[20],currentuserpw[20];
+
+//---------------------------function prototypes------------------------ 
 void errorAct(); 	//done
 void startPageAct(); //done-check need
 void registerAct();  //done-check need , account stop redundancy thing
@@ -15,16 +20,8 @@ void loginActAdm(); //crashing here in add movies garbage values
 void aboutAct();	//done but edit the features and limitations
 void dashboard();	//todo
 
-//logindata format:userid pw  //seperated by space
-//userdata format:user tickerseatc
-//showdata : show ticketsold
 
-
-int state=0,currentuserage; // 0 means guest 1 means logged in  . 2 for wrong password
-char currentusername[20],currentuserpw[20];
-
-
-//--------------------------class for login data----------------------------
+//--------------------------Class for user login data----------------------------
 class logindata{
 	//this is for user to register and login
 	public:
@@ -32,7 +29,7 @@ class logindata{
 	char userpw[20];
 	int age;//for movie rating
 	
-	public:
+	
 		void registeruser(){
 			//need to add conf pw verification
 			cout<<"\n|Enter new Username: ";cin>>username;
@@ -44,7 +41,9 @@ class logindata{
 			cout<<"\nPassword: "<<userpw;
 			cout<<"\nAge: "<<age;
 		}
-	
+	    int returnage(){
+	    	return age;
+		}
 
 };
 
@@ -66,29 +65,59 @@ class showdata{
 	int seatssilver;
 	int seatsplatinium;
 	
-	public:
-	showdata(){
-		//default number of seats //custom number for special shows make a fn for that
-		seatssilver=80;
-		seatsgold=112;
-		seatsplatinium=60;
+		void setseatdefault(){
+			seatssilver=80;
+			seatsgold=112;
+			seatsplatinium=60;
+		}
 		
+		void setseatcustom(){
+			cout<<"\nEnter seats for show:";
+			cout<<"\n|silver: ";scanf("%d",&seatssilver);
+			cout<<"\n|Gold: ";scanf("%d",&seatsgold);
+			cout<<"\n|platinium: ";scanf("%d",&seatsplatinium);			
+		}
+		
+		void updateseatno(int seatclass){
+			switch(seatclass){
+				case 1: seatssilver-=1;
+				break;
+				case 2: seatsgold-=1;
+				break;
+				case 3: seatsplatinium-=1;
+				break;
+			}
 	}
 	
-	void inputmoviedata(){
-		cout<<"\nEnter movie name: ";cin>>moviename;
-		cout<<"\nEnter genre: ";cin>>genre;
-		cout<<"\nEnter about: ";cin>>about;
-		cout<<"\nEnter review: (max 5 stars): ";cin>>review;		
-		cout<<"\nEnter Rating: (0,16,18): ";cin>>rating;
-		cout<<"\nEnter Status: (upcomming or ongoing): ";cin>>status;
+	void inputmovie(){
+		cin.ignore();
+		cout<<"\n--------Enter movie details--------";
+		cout<<"\nMovie/show name: ";gets(moviename);//scanf("%s",&moviename);//cin>>moviename;
+		cout<<"\nGenre: ";gets(genre);//scanf("%s",&genre);//cin>>genre;
+		cout<<"\nAbout: ";gets(about);//scanf("%s",&about);//cin>>about;
+		cout<<"\nReview:(0-5 Stars) ";scanf("%d",&review);//cin>>review;
+		cout<<"\nRating:(0,16,18) ";scanf("%d",&rating);//cin>>rating;
+		cout<<"\nStatus:(upcoming||ongoing) ";scanf("%s",&status);//cin>>status;
+		cout<<"\nSilver Ticket Price: ";scanf("%d",&pricesilver);//cin>>pricesilver;
+		cout<<"\nGold Ticket Price: ";scanf("%d",&pricegold);//cin>>pricegold;
+		cout<<"\nPlatinium Ticket Price: ";scanf("%d",&priceplatinium);//cin>>priceplatinium;
 		
-		cout<<"\nEnter Silver Ticket Price: ";cin>>pricesilver;
-		cout<<"\nEnter Gold Ticket Price: ";cin>>pricegold;
-		cout<<"\nEnter Platinium Ticket Price: ";cin>>priceplatinium;		
-		
+	cout<<"\n\n|press>> 1.Custom or 2.default Seat matrix: ";
+			int i;
+			cin>>i;
+			switch(i){
+				case 1:setseatcustom();
+				break;
+				case 2:setseatdefault();
+				break;
+				default: errorAct();
+			}		
 	}
 	
+	char* returnmoviename(){
+		return moviename;
+	}
+
 	void displaymoviedata(){
 		cout<<"\n-----------------------------------------------";
 		cout<<"\nMovie Name: "<<moviename;
@@ -101,13 +130,13 @@ class showdata{
 
 		cout<<"\nSeat Availibility: ";
 		if(seatssilver>0)
-		{cout<<"Silver";
+		{cout<<seatssilver<<" Silver ,";
 		}
 		if(seatsgold>0)
-		{cout<<" Gold";
+		{cout<<seatsgold<<" Gold ,";
 		}
 		if(seatsplatinium>0)
-		{cout<<" Platinium";
+		{cout<<seatsplatinium<<" Platinium";
 		}
 		if((seatssilver<=0)&&(seatsgold<=0)&&(seatsplatinium<=0))
 		{
@@ -116,21 +145,69 @@ class showdata{
 		cout<<"\n-----------------------------------------------\n";
 		
 	}
-	
-	void updateseatno(int ticketsbought,int tickettype){
-		//this updates number of seats availible
-		switch(tickettype){
-			case 1:seatssilver-=ticketsbought;
+	int returnseatprice(int clas){
+		switch(clas){
+			case 1: return pricesilver;
 			break;
-			case 2:seatsgold-=ticketsbought;
+			case 2: return pricegold;
 			break;
-			case 3:seatsplatinium-=ticketsbought;
+			case 3: return priceplatinium;
 		}
 	}
 	
+
 };
 
-bool is_empty(ifstream& pFile)
+
+//-----------------------------------class for tickets---------------------------------
+class ticket{
+	public:
+		char holdername[30];
+		char moviename[30];
+		int beverage;
+		int seatclass;
+		int totalcost;
+		
+		void totalcostcal(int classprice){
+			switch(beverage){
+				case 1:totalcost=classprice+80;
+				break;
+				case 2:totalcost=classprice+20;
+				break;
+				case 3:totalcost=classprice+100;
+			}
+			
+		}
+		
+		void ticketviewer(){
+			cout<<"\n***************|Ticket|**************";
+			cout<<"\nMovie: "<<moviename; 
+			switch(seatclass)
+			{case 1: cout<<"             -Silver-";
+			 break;
+			 case 2: cout<<"		   	 +Gold+";
+			 break;
+			 case 3:cout<<"               *Platinium*";
+			}
+			cout<<"\n-------------------------------------";
+			cout<<"\nName: "<<holdername;
+			cout<<"\nBeverage: ";
+			switch(beverage)
+			{case 1: cout<<"Popcorn";
+			 break;
+			 case 2: cout<<"Coldrink";
+			 break;
+			 case 3:cout<<"Combo(popcorn+coldrink)";
+			}
+			cout<<"\n			 Total: Rs"<<totalcost;
+			cout<<"\n*************************************";
+		}
+		
+};
+
+
+//to check if file is empty or not
+bool is_empty(ifstream& pFile) 
 {
     return pFile.peek() == ifstream::traits_type::eof();
 }
@@ -147,7 +224,8 @@ int main()
 
 //-------------------------------dashboard------------------------------
 void dashboard() //to show all movies
-{	int ch,count=1;
+{	int ch,count=1,i=0;int moviechoice;
+	char movielist[20][20];
 	showdata obj;
 	ifstream fin;//to open showdata.dat
 	ofstream fout;//to write 
@@ -162,46 +240,161 @@ void dashboard() //to show all movies
 		cout<<"Guest|NOT REGISTERED";
 	}
 	if(::state==1){
-		cout<<currentusername<<"|REGISTERED";
+		cout<<currentusername<<"|REGISTERED\n";
 	}
 	
 	fin.open("showdata.dat",ios::binary);
 	//To display ongoing 
-	while(!fin.eof()){	
-		fin.read((char*)&obj,sizeof(obj));
+	while(fin.read((char*)&obj,sizeof(obj))){	
+		//fin.read((char*)&obj,sizeof(obj));
 		cout<<"\nMovie: |"<<count<<"|--->> ";
 		obj.displaymoviedata();
-		count++;	
+		strcpy(movielist[i],obj.returnmoviename());
+		count++;i++;
 	}
 	fin.close();
 	
+	cin.ignore();
 	cout<<"\n\n|press 1:To book tickets\n|press 2:StartPage\n|press 3:To Exit\nEnter your choice---> ";
 	cin>>ch;
 	switch(ch){
-		case 1://book
+	case 1:
+		//book
+		ifstream f;
+		//ofstream t;
+		showdata b;
+		ticket tt;
+		int clas,btype,clasprice;int cc;
+		if(::state==1){
+			cout<<"\n|*|Select Movie to book: ";
+			for(int x=0;x<i;x++){
+				cout<<"\n"<<x+1<<"."<<movielist[x];
+			}cout<<"\n";
+			cout<<"Enter your choice: ";cin>>moviechoice;cout<<" you selected: "<<movielist[moviechoice-1];
+			
+			//problem here____.
+			//garbage value  also seatdata not updating
+			f.open("showdata.dat",ios::binary);
+			while(!f.eof()){
+				f.read((char*)&b,sizeof(b));
+				if(!strcmp(movielist[moviechoice-1],b.moviename))
+				cout<<"\nmoviefound";
+					break;
+			}
+			
+			
+			
+			if(b.rating<currentuserage)
+			{
+				cout<<"\nAvailible Tickets and thier price :";
+				cout<<"\n|1|Silver Seats(Rs"<<b.pricesilver<<"): "<<b.seatssilver;
+				cout<<"\n|2|Gold Seats(Rs"<<b.pricesilver<<"): "<<b.seatssilver;
+				cout<<"\n|3|Platinium Seats(Rs"<<b.pricesilver<<"): "<<b.seatssilver;
+				cout<<"\nSelect class: ";cin>>clas;
+				//return price of seat class u selected 
+				//switch(clas){
+				//	case 1: clasprice=b.pricesilver;
+				//	break;
+				//	case 2: clasprice=b.pricegold;
+				///	break;
+				//	case 3: clasprice=b.priceplatinium;
+				//	}//**********
+				clasprice=b.returnseatprice(clas);
+				cout<<"\n\nSelect bevarage: "<<"\n|1.Popcorn(80rs)\n|2.coldrink(20rs)\n\3.Combo(100rs)";
+				cin>>btype;
+				cout<<"\nWait it may take some time";
+				
+				//generating ticket 
+				strcpy(tt.moviename,b.moviename);
+				strcpy(tt.holdername,currentusername); 
+				tt.seatclass=clas;
+				tt.beverage=btype;
+				tt.totalcostcal(clasprice);//check here
+				
+				ofstream t;
+				//saving ticket in file
+				t.open("ticketdata.dat",ios::binary);
+				t.write((char*)&tt,sizeof(tt));
+				t.close();
+				
+				//update ticket
+				fstream fin;showdata u;
+				fin.open("showdata.dat",ios::binary|ios::in|ios::out);
+				while(fin.read((char*)&u,sizeof(u)))
+				{
+					//fin.read((char*)&u,sizeof(u));
+					if(!strcmp(movielist[moviechoice],u.moviename)){
+						fin.seekp(-1*sizeof(u),ios::cur);
+						u.updateseatno(clas);
+						fin.write((char*)&u,sizeof(u));
+						break;
+					}
+				}
+				fin.close();
+				
+				
+				cout<<"\nTicket generated! ";
+				cout<<"\n\n|press 1 :showticket \n|press 2:startpage\nEnter choice: ";
+				cin>>cc;
+				switch(cc){
+					case 1:tt.ticketviewer();cout<<"\n\n|press 1:startpage\n|press 2:exit\nEnter choice: "; //print tickit option add 
+							cin>>cc;
+							switch(cc){
+								
+								case 1:startAct();
+								break;
+								case 2:exitAct();
+								default: errorAct();
+										}
+				
+					break;
+					case 2:startAct();
+					break;
+					default: errorAct();
+				}
+				
+				
+				
+			}
 		
-		if(state!=0){
+			else{
+				int c;
+				cout<<"\nSOrry! Your age is less than "<<b.rating<<" for movie "<<b.moviename;
+				cout<<"\n\n|press 1: startPage(use other account)\n|press 2:exit\nYour choice: ";
+				cin>>c;
+				if(c==1)
+					startAct();
+				if(c==2)
+					exitAct();
+				else
+					errorAct();
+			}
+			
+			
+			
 			
 			
 		}
 		else{
-			cout<<"\n|press 1:Startpage\n|press 2:Exit\nYour choice: ";
+			cout<<"\nYou are in guest mode! to buy login/register \n|press 1:login\n|press 2:Register \n|press 3:Exit\nYour choice: ";
 			cin>>ch;
 			if(ch==1)
-				startAct();
+				loginAct();
 			if(ch==2)
+				registerAct();
+			if(ch==3)
 				exitAct();
 			else
 				errorAct();
 		}
 		
-		break;
 		
-		case 2:startAct();
+	break;
+	//case 2:startAct();
 		
-		break;
+	break;
 		
-		case 3:exitAct();
+//	case 3:exitAct();
 			
 	}
 	
@@ -328,7 +521,9 @@ void loginAct()
 			//also store the info for session
 			strcpy(currentusername,l.username);
 			strcpy(currentuserpw,l.userpw);
-			::currentuserage=l.age;
+			currentuserage=l.returnage();
+			fin.close(); 
+			
 			dashboard();// To work in this now                       ***************
 			
 			}
@@ -381,29 +576,34 @@ void loginActAdm()
 	
 	system("cls");
 	loginAdmPage();
+	
 	cin>>ch;
 	switch(ch)
 	{
 		case 1:
 			//verify user and take to admin dashboard
 			//This is temporary method
+			cin.ignore();
 			cout<<"\n|Enter adminid: ";cin>>adminid;
 			cout<<"\n|Enter password: ";cin>>adminpw;
 			if(!(strcmp(adminid,"admin"))&&(strcmp(adminpw,"1234"))){   //temporary admin password
 				cout<<"logged in !";
 				
 				cout<<"\n\n|Press 1:To add movies\n|Press 2:To remove movies\n|press 3:To view All\nYour choice--> ";
+				
+				cin.ignore();//cin buffer clear crashfixcin.ignore(INT_MAX);
 				cin>>ch;
 				switch(ch){
 					case 1://add movies
 					fout.open("showdata.dat",ios::binary|ios::app);
-					m.inputmoviedata();
+					m.inputmovie();
 					//<-------------crashing here
 					fout.write((char*)&m,sizeof(m));
 					cout<<"\n\nMovie added!";
 					fout.close();
 					
 					cout<<"\n\n|press 1:Add More(adminPage)(login again)\n|press 2:startPage\n|press 3:Exit\nEnter your choice:-> ";
+					cin.ignore();
 					cin>>ch;
 					switch(ch){
 						case 1:loginActAdm();  
@@ -457,9 +657,16 @@ void loginActAdm()
 					fin3.open("showdata.dat",ios::binary);
 					if(!is_empty(fin3)){
 					
-					while(!fin3.eof()){
-						fin3.read((char*)&p,sizeof(p));
-						p.displaymoviedata();
+					//while(!fin3.eof()){
+					//	fin3.read((char*)&p,sizeof(p));
+					//	p.displaymoviedata();
+					//refer soln : while ( f.read( reinterpret_cast<char*>( &temp ), sizeof( temp ) ) ) {
+ 					  // temp.displaydata();	
+					//	}
+						while(fin3.read((char*)&p,sizeof(p))){
+							p.displaymoviedata();
+						
+					
 						
 					}fin3.close();
 					}
