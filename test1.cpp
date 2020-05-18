@@ -272,8 +272,8 @@ void dashboard() //to show all movies
 			}cout<<"\n";
 			cout<<"Enter your choice: ";cin>>moviechoice;cout<<" you selected: "<<movielist[moviechoice-1];
 			
-			//problem here____.
-			//garbage value  also seatdata not updating
+			//problem here____.::::fixed
+			//garbage value  also seatdata not updating::: fixed
 			f.open("showdata.dat",ios::binary);
 			while(!f.eof()){
 				f.read((char*)&b,sizeof(b));
@@ -316,8 +316,9 @@ void dashboard() //to show all movies
 				t.open("ticketdata.dat",ios::binary);
 				t.write((char*)&tt,sizeof(tt));
 				t.close();
+				f.close();
 				
-				//update ticket
+				//update ticket :::seats not updating ///new issue
 				fstream fin;showdata u;
 				fin.open("showdata.dat",ios::binary|ios::in|ios::out);
 				while(fin.read((char*)&u,sizeof(u)))
