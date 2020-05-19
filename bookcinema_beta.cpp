@@ -261,6 +261,7 @@ void dashboard() //to show all movies
 	cin>>ch;
 	switch(ch){
 	case 1:
+	{
 		//book
 		ifstream f;
 		//ofstream t;
@@ -392,13 +393,19 @@ void dashboard() //to show all movies
 		}
 		
 		
-	break;
-	//case 2:startAct();
+	break;}
+	
+	case 2:{
+		startAct();
+		break;
+	}
 		
-	break;
+	
 		
-//	case 3:exitAct();
-			
+	case 3:{exitAct();
+		break;
+	}
+	default : errorAct();		
 	}
 	
 	
@@ -410,7 +417,7 @@ void dashboard() //to show all movies
 void exitAct()
 {	system("cls");
 	exitPage();
-	int c;cout<<"\nThank you for using my program!\nPress Enter to exit! ";cin>>c;
+	int c;cout<<"\nThank you for using my program!\nEnter bye to exit! ";cin>>c;
 	exit(0);	
 }
 
