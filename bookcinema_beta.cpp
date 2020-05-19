@@ -257,7 +257,7 @@ void dashboard() //to show all movies
 	fin.close();
 	
 	cin.ignore();
-	cout<<"\n\n|press 1:To book tickets\n|press 2:StartPage\n|press 3:To Exit\nEnter your choice---> ";
+	cout<<"\n\n|press 1:To book tickets(registered)\n|press 2:StartPage\n|press 3: View book tickets(registered)\n|press 4:To Exit\nEnter your choice---> ";
 	cin>>ch;
 	switch(ch){
 	case 1:
@@ -400,9 +400,46 @@ void dashboard() //to show all movies
 		break;
 	}
 		
+	case 3:{
+		if(::state!=0){
+			ifstream file;int ccc;
+			ticket ff;
+			cout<<"\n\n"<<currentusername<<"'s tickets: \n";
+			file.open("ticketdata.dat",ios::binary);
+			while(file.read((char*)&ff,sizeof(ff))){
+				if(!strcmp(ff.holdername,currentusername)){
+					ff.ticketviewer();
+				}
+			}
+			cout<<"\n\n|press 1:startpage\n|press 2:exit\nEnter choice: "; //print tickit option add 
+							cin>>ccc;
+							switch(ccc){
+								
+								case 1:startAct();
+								break;
+								case 2:exitAct();
+								default: errorAct();
+										}
+		
+		}
+		else
+			{
+			cout<<"\nYou are in guest mode! to buy login/register \n|press 1:login\n|press 2:Register \n|press 3:Exit\nYour choice: ";
+			cin>>ch;
+			if(ch==1)
+				loginAct();
+			if(ch==2)
+				registerAct();
+			if(ch==3)
+				exitAct();
+			else
+				errorAct();
+			}
+		break;
+	}
 	
 		
-	case 3:{exitAct();
+	case 4:{exitAct();
 		break;
 	}
 	default : errorAct();		
