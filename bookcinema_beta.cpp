@@ -591,6 +591,8 @@ void loginActAdm()
 	switch(ch)
 	{
 		case 1:
+			{
+			
 			//verify user and take to admin dashboard
 			//This is temporary method
 			cin.ignore();
@@ -599,12 +601,14 @@ void loginActAdm()
 			if(!(strcmp(adminid,"admin"))&&(strcmp(adminpw,"1234"))){   //temporary admin password
 				cout<<"logged in !";
 				
-				cout<<"\n\n|Press 1:To add movies\n|Press 2:To remove movies\n|press 3:To view All\nYour choice--> ";
+				cout<<"\n\n|Press 1:To add movies\n|Press 2:To remove movies\n|press 3:To view All\n|press 4:To see all booked tickets\nYour choice--> ";
 				
 				cin.ignore();//cin buffer clear crashfixcin.ignore(INT_MAX);
 				cin>>ch;
 				switch(ch){
-					case 1://add movies
+					case 1:
+					{
+					//add movies
 					fout.open("showdata.dat",ios::binary|ios::app);
 					m.inputmovie();
 					//<-------------crashing here
@@ -627,9 +631,11 @@ void loginActAdm()
 						default: errorAct();
 					}
 					
-					break;
+					break;}
 					
-					case 2://delete movies
+					case 2:
+					{
+					//delete movies
 					cout<<"\n\nEnter movie you want to remove: ";cin>>deletemoviename;
 					fout2.open("showdata2.dat",ios::binary|ios::app);
 					fin2.open("showdata.dat",ios::binary);
@@ -661,9 +667,12 @@ void loginActAdm()
 						default : errorAct();
 					}			
 						
-					break;
+					break;}
 					
-					case 3://to view all movie
+					
+					case 3:
+					{
+					//to view all movie
 					fin3.open("showdata.dat",ios::binary);
 					if(!is_empty(fin3)){
 					
@@ -692,12 +701,32 @@ void loginActAdm()
 						break;
 						default: errorAct();
 					}
-					break;
+					break;}
+					
+					case 4: 
+					{
+					//to view all tickets booked till now
+					ticket a;
+					ifstream ff;
+					ff.open("ticketdata.dat",ios::binary);
+					cout<<"\nViewing all tickets booked::->";
+					while(ff.read((char*)&a,sizeof(a))){
+						 a.ticketviewer();
+						 cout<<endl;
+					}
+					cout<<"\n\n|press 1:startPage \n|press 2:admin\nyour choice--> ";
+					cin>>ch;
+					switch(ch){
+						case 1 : startAct();
+						break;
+						case 2 : loginActAdm();
+						break;
+						default: errorAct();
+					}
+					break;}
 					
 					default:
-						errorAct();
-					
-					
+						errorAct();	
 					
 				}
 			}
@@ -719,10 +748,12 @@ void loginActAdm()
 			
 			
 			
-		break;
+		break;}
 		
-		case 2:startAct();
-		break;
+		case 2:{
+			
+		startAct();
+		break;}
 		
 		default:errorAct();
 	}
